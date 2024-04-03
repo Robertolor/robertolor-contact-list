@@ -1,29 +1,30 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			
+			contacts: []
+			
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+
+loadContactsData: async () => {
+				try {
+				const response = await fetch("https://playground.4geeks.com/contact/agendas/Daniel1/contacts");
+					if (!response.ok) {
+						throw new Error("Failed to fetch contacts data");
+					}
+				const data = await response.json();
+				setStore({contacts: data.contacts})
+				}catch (error) {
+					console.error("Error loading contacts data:", error);
+				}
 			},
+
+			
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
